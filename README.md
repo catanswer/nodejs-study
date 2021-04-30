@@ -449,5 +449,83 @@ app.listen(8080, () => {
 3. jade
 4. art-template
 
+### MongoDB
+本地启动MongoDB服务
+```bash
+mongod -dbpath D:\MongoDB\data\db
+```
+使用`MongoDB Compass` 工具操作数据库
 
+![Image text](/mongodb/images/mongodb.jpg)
+![Image text](/mongodb/images/mongoDB-order.jpg)
 
+- `collections` 常用操作
+```bash
+# 插入数据
+db.test.insert({name: 'm1', age: 29 release: 'v1.0.0'})
+# 同时插入多个
+db.test.insert([{name: 'm1', age: 29, release: 'v1.0.0'}, {name: 'm2', age: 19, release: 'v2.0.0'}])
+
+# 修改数据      （# 匹配条件 #数据操作符   #需要修改的内容 #若未匹配到则相当于插入操作 #匹配到多个是否只修改一个）
+db.test.update({ name: 'm1'}, {$set: { release: 'v1.1.1' }, true, true})
+
+# 删除一条数据
+db.test.remove({name: 'm2'})
+```
+查询的一些操作
+```bash
+# 查询所有的collections
+db.test.find()
+
+# 查询去重数据
+db.test.disinct('name')
+
+# 查询name='m1'的数据
+db.test.find({ name: 'm1' })
+
+# 查询age > 22的数据；
+# 大于：$gt  大于等于：$gte
+# 小于：$lt  小于等于：$lte
+db.test.find({ age: { $gt:22 } })
+# 同时满足多个条件
+db.test.find({ age: { $gte:22, $lte: 26 } })
+
+# 使用正则匹配查询数据
+# 查询name中包含‘mongo’的数据
+db.test.find({ name: /mongo/ })
+# 查询name中以‘mongo’开头的数据
+db.test.find({ name: /^mongo/ })
+
+# 查询时，隐藏数据的某些字段。在第二个参数中，将对应字段设置为0
+db.test.find({}, { _id: 0, release: 0 })
+
+# 查询指定列name的数据。和上面的设置方式类似
+db.test.find({}, { name: 1 })
+db.test.find({ age: { $gt: 25 } }, { name: 1, age: 1 })
+
+# 排序
+# 升序：1
+# 降序：-1
+db.test.find().sort({ age: 1 })
+
+# 精准的查询
+db.test.find({ name: 'm1', age: 29 })
+
+# 分页查询
+# 查询前五条数据
+db.test.find().limit(5)
+# 查询10条以后的数据
+db.test.find().skip(10)
+# 查询5-10条之间的数据
+db.test.find().limit(10).skip(5)
+
+# or条件
+# 数组条件中满足一个即可
+db.test.find({ $or: [{ age: 29 }, { age: 19 }] })
+
+# 查询第一条数据
+db.test.findOne()
+
+# 查询结果的数量
+db.test.find({ age: { $gt: 20 } }).count()
+```
