@@ -1,0 +1,24 @@
+[2021-04-27T11:17:49.078] [DEBUG] cheese - url.parse Url {
+  protocol: 'https:',
+  slashes: true,
+  auth: null,
+  host: 'www.baidu.com:443',
+  port: '443',
+  hostname: 'www.baidu.com',
+  hash: '#tag=3',
+  search: '?id=2',
+  query: 'id=2',
+  pathname: '/path/index.html',
+  path: '/path/index.html?id=2',
+  href: 'https://www.baidu.com:443/path/index.html?id=2#tag=3'
+}
+[2021-04-27T11:17:49.082] [DEBUG] cheese - url.format https://www.baidu.com:443/path/index.html?id=2#tag=3
+[2021-04-27T11:17:49.083] [DEBUG] cheese - url.resolve http://www.abc.com/
+[2021-04-27T11:17:49.084] [DEBUG] cheese - url.resolve http://www.abc.com/b
+[2021-04-27T11:17:49.085] [DEBUG] cheese - URLSearchParams:  URLSearchParams { 'id' => '2' }
+[2021-04-27T11:17:49.086] [DEBUG] cheese - URLSearchParams - get:  2
+[2021-04-27T11:17:49.087] [DEBUG] cheese - querystring.parse:  [Object: null prototype] { id: '2', name: 'ysh', from: '杭州' }
+[2021-04-27T11:17:49.087] [DEBUG] cheese - querystring.parse:  [Object: null prototype] { id: '2', name: 'ysh', from: '杭州' }
+[2021-04-27T11:17:49.088] [DEBUG] cheese - querystring.stringify:  id=2&name=ysh&from=%E6%9D%AD%E5%B7%9E
+[2021-04-27T11:17:49.088] [DEBUG] cheese - querystring.unescape:  id=2&name=ysh&from=杭州
+[2021-04-27T11:17:49.088] [DEBUG] cheese - newQuery:  id=2&name=ysh&from=杭州

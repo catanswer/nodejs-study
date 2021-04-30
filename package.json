@@ -1,0 +1,20 @@
+{
+  "name": "node-study",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "tools/npm",
+    "tools/npm/modules/custom",
+    "train-express-env"
+  ],
+  "devDependencies": {
+    "log4js": "^6.3.0"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.6",
+    "http-proxy-middleware": "^1.3.0",
+    "mime": "^2.5.2"
+  }
+}
