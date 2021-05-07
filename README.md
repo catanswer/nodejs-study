@@ -529,3 +529,16 @@ db.test.findOne()
 # 查询结果的数量
 db.test.find({ age: { $gt: 20 } }).count()
 ```
+
+### Node.js项目
+#### 前端（Frontend）
+- 前端工程化环境：Webpack
+- CSS预处理工具：Sass
+- SPA：单页面应用
+- 路由：SEM-Router
+- UI组件库：BootStrap（AdminLTE）
+
+#### 后端（Backend）
+- Node.js
+- Express
+- MongoDB（Mongoose）
