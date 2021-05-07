@@ -1,0 +1,7 @@
+<ul class="pagination pagination-sm no-margin pull-right" id="users-page-list">
+  <li id="users-page-prev"><a href="#">&laquo;</a></li>
+  {{each data}}
+    <li class="page"><a href="#">{{$index + 1}}</a></li>
+  {{/each}}
+  <li id="users-page-next"><a href="#">&raquo;</a></li> 
+</ul>
