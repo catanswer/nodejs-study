@@ -22,14 +22,13 @@ const _addUser = () => {
     success(res) {
       if (res.ret) {
         _loadData()
-        $('#user-form')[0].reset()
+        $cancelUser.click()
       } else {
-        $('#user-form')[0].reset()
+        console.log('添加失败~')
       }
+      $('#user-form')[0].reset()
     }
   })
-
-  $cancelUser.click()
 }
 
 // 获取用户列表
@@ -91,50 +90,75 @@ const _settPageActive = (index) => {
 
 export default (router) => {
   return (req, res, next) => {
-    res.render(indexHtml)
-    $(window, '.wrapper').resize()
+    const _init = (res) => {
+      res.render(indexHtml)
+      $(window, '.wrapper').resize()
+  
+      $('#content').html(usersTpl())
+  
+      // 初次获取list
+      _loadData()
+  
+      // 添加用户事件
+      $('#addUser').on('click', _addUser)
+      $('#cancelUser').on('click',)
+      
+      // 绑定删除
+      $('#users-list').on('click', '.remove-user', _removeUser)
+  
+      // 分页事件绑定
+      $('#users-page').on('click', '#users-page-list li.page', function() {
+        const index = $(this).index()
+        // $(this).addClass('active').siblings().removeClass('active')
+        _settPageActive(index)
+        _getUserslist(index)
+        currentPage = index
+      })
+      // 前一页
+      $('#users-page').on('click', '#users-page-list #users-page-prev', function() {
+        if (currentPage > 1) {
+          currentPage--
+          _getUserslist(currentPage)
+          _settPageActive(currentPage)
+        }
+      })
+      // 后一页
+      $('#users-page').on('click', '#users-page-list #users-page-next', function() {
+        if (currentPage < Math.ceil(dataList.length / pageSize)) {
+          currentPage++
+          _getUserslist(currentPage)
+          _settPageActive(currentPage)
+        }
+      })
+  
+      // 登出
+      $('#users-loginout').on('click', function(e) {
+        e.preventDefault()
+        $.ajax({
+          url: '/api/users/logout',
+          success(res) {
+            if (res.ret) {
+              // router.go('/login')
+              location.reload()
+            } else {
+              console.log('退出登录失败~')
+            }
+          }
+        })
+      })
 
-    $('#content').html(usersTpl())
-
-    // 初次获取list
-    _loadData()
-
-    // 添加用户事件
-    $('#addUser').on('click', _addUser)
-    $('#cancelUser').on('click',)
-    
-    // 绑定删除
-    $('#users-list').on('click', '.remove-user', _removeUser)
-
-    // 分页事件绑定
-    $('#users-page').on('click', '#users-page-list li.page', function() {
-      const index = $(this).index()
-      // $(this).addClass('active').siblings().removeClass('active')
-      _settPageActive(index)
-      _getUserslist(index)
-      currentPage = index
-    })
-    // 前一页
-    $('#users-page').on('click', '#users-page-list #users-page-prev', function() {
-      if (currentPage > 1) {
-        currentPage--
-        _getUserslist(currentPage)
-        _settPageActive(currentPage)
+    }
+    $.ajax({
+      url: '/api/users/isAuth',
+      success(result) {
+        if (result.ret) {
+          _init(res)
+        } else {
+          router.go('/login')
+        }
       }
     })
-    // 后一页
-    $('#users-page').on('click', '#users-page-list #users-page-next', function() {
-      if (currentPage < Math.ceil(dataList.length / pageSize)) {
-        currentPage++
-        _getUserslist(currentPage)
-        _settPageActive(currentPage)
-      }
-    })
 
-    // 登出
-    $('#users-loginout').on('click', function(e) {
-      e.preventDefault()
-      router.go('/login')
-    })
+
   }
 }

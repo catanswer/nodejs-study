@@ -5,7 +5,22 @@ import index from '../controllers/index'
 
 const router = new SMERouter('root')
 
-// router.route('/', login(router))
+// 路由中间件 = 路由守卫
+router.use((req) => {
+  // 初始化鉴权
+  $.ajax({
+    url: '/api/users/isAuth',
+    success(res) {
+      if (res.ret) {
+        router.go('/index')
+      } else {
+        router.go('/login')
+      }
+    }
+  })
+})
+
+router.route('/', () => {})
 
 // 首页
 router.route('/index', index(router))

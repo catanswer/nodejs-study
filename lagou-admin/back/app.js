@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
+var cookieSession = require('cookie-session')
 
 var app = express();
 
@@ -22,6 +23,12 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 设置cookie-session
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
 
 app.use('/api/users', userRouter)
 

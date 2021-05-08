@@ -1,5 +1,5 @@
 const { addUser, findOneUser, getUserList, removeUser } = require('../models/users')
-const { bcryptHash } = require('../utils/tools')
+const { bcryptHash, compare } = require('../utils/tools')
 
 // 添加用户
 const add = async (req, res, next) => {
@@ -63,8 +63,76 @@ const remove = async (req, res, next) => {
   }
 }
 
+// 登录
+const login = async (req, res, next) => {
+  res.set('content-type', 'application/json; charset=utf-8')
+  const { username, password } = req.body
+  const result = await findOneUser(username)
+  // 验证用户名是否存在
+  if (result) {
+    const { password: hash } = result
+    const compareResult = compare(password, hash)
+    // 验证密码是否正确
+    if (compareResult) {
+      // 设置session
+      req.session.username = username
+
+      res.render('success', {
+        data: JSON.stringify({
+          username,
+          message: '登录成功~'
+        })
+      })
+    } else {
+      res.render('fail', {
+        data: JSON.stringify({
+          message: '密码错误~'
+        })
+      })
+    }
+  } else {
+    res.render('fail', {
+      data: JSON.stringify({
+        message: '用户名错误~'
+      })
+    })
+  }
+}
+
+// 退出登录
+const logout = async (req, res, next) => {
+  res.set('content-type', 'application/json; charset=utf-8')
+  req.session = null
+  res.render('success', {
+    data: JSON.stringify({
+      message: '退出登录成功~'
+    })
+  })
+}
+
+const isAuth = (req, res, next) => {
+  res.set('content-type', 'application/json; charset=utf-8')
+  const username = req.session.username
+  if (username) {
+    res.render('success', {
+      data: JSON.stringify({
+        username
+      })
+    })
+  } else {
+    res.render('fail', {
+      data: JSON.stringify({
+        message: '请登录~'
+      })
+    })
+  }
+}
+
 module.exports = {
   add,
   list,
-  remove
+  remove,
+  login,
+  logout,
+  isAuth
 }
