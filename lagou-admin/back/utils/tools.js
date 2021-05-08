@@ -14,3 +14,12 @@ exports.bcryptHash = (myPlaintextPassword) => {
     })
   })
 }
+
+// 验证密码
+exports.compare = (myPlaintextPassword, hash) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
+      resolve(result)
+    })
+  })
+}
