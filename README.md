@@ -542,3 +542,31 @@ db.test.find({ age: { $gt: 20 } }).count()
 - Node.js
 - Express
 - MongoDB（Mongoose）
+- 密码加密工具：bcrypt
+
+### 后端维护用户登录状态
+- Cookie和Session
+  工具：cookie-session
+  实现auth自定义中间件， 来进行鉴权
+  ```js
+  // 后端 app.js
+  // 设置cookie-session
+  app.use(cookieSession({
+    name: 'session',
+    // keys: ['key1', 'key2']
+  }))
+
+  // 用户登出时 置空session
+  req.session = null
+  ```
+
+- Token
+```bash
+npm i jsonwebtoken
+```
+- oAuth
+
+#### Socket消息推送
+```bash
+yarn add socket.io -S
+```
